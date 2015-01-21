@@ -41,8 +41,9 @@ func sendMessage(ws *websocket.Conn, message types.Message) {
 
 func main() {
 	const message = "Hello World!"
+	const server = "130.211.141.47"
 	dialer := websocket.DefaultDialer;
-	ws, _, err := dialer.Dial("ws://localhost:8080/ws", nil)
+	ws, _, err := dialer.Dial("ws://" + server + "/ws", nil)
 	var mode = flag.String("mode", "", "modes (-s: start, -e: end)")
 	flag.Parse()
 	defer ws.Close()
