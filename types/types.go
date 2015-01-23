@@ -8,14 +8,23 @@ const End_id = 1
 
 type Message struct {
 	Mode int
+	Command string
+	Status int
 }
 
-var StartMessage = Message{
-	Mode: Start_id,
+func StartMessage(command string) Message {
+	return Message{
+		Mode: Start_id,
+		Command: command,
+	}
 }
 
-var EndMessage = Message{
-	Mode: End_id,
+func EndMessage(command string, status int) Message { 
+	return Message{
+		Mode: End_id,
+		Command: command,
+		Status: status,
+	}
 }
 
 func Deserialize(input []byte) (*Message, error) {

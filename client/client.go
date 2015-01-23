@@ -44,7 +44,9 @@ func main() {
 	const server = "130.211.141.47"
 	dialer := websocket.DefaultDialer;
 	ws, _, err := dialer.Dial("ws://" + server + "/ws", nil)
-	var mode = flag.String("mode", "", "modes (-s: start, -e: end)")
+	var mode = flag.String("mode", "", "modes (s: start, e: end)")
+	var command = flag.String("command", "", "Command that was run (and finished)")
+	var status = flag.Int("status", 0, "Status of command run")
 	flag.Parse()
 	defer ws.Close()
 
@@ -55,9 +57,9 @@ func main() {
 
 	fmt.Println(*mode);
 	if *mode == "s" {
-		sendMessage(ws, types.StartMessage)
+		sendMessage(ws, types.StartMessage(*command))
 	} else if *mode == "e" {
-		sendMessage(ws, types.EndMessage)
+		sendMessage(ws, types.EndMessage(*command, *status))
 	}
 	
 	/*if (*tail) {
