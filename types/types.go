@@ -3,27 +3,34 @@ package types
 import (
 	"encoding/json"
 )
+
 const Start_id = 0
 const End_id = 1
+const Listen_id = 2
 
 type Message struct {
+	ClientId string
 	Mode int
 	Command string
 	Status int
 }
 
-func StartMessage(command string) Message {
+// TODO: builder to avoid having to pass clientId
+
+func StartMessage(command string, clientId string) Message {
 	return Message{
 		Mode: Start_id,
 		Command: command,
+		ClientId: clientId,
 	}
 }
 
-func EndMessage(command string, status int) Message { 
+func EndMessage(command string, status int, clientId string) Message { 
 	return Message{
 		Mode: End_id,
 		Command: command,
 		Status: status,
+		ClientId: clientId,
 	}
 }
 

@@ -16,20 +16,29 @@ type hub struct {
 	connections map[*connection]bool
 
 	// Inbound messages from the connections.
-	broadcast chan []byte
+	broadcast chan connectionWithMessage
 
 	// Register requests from the connections.
 	register chan *connection
 
 	// Unregister requests from connections.
 	unregister chan *connection
+
+	// Keep track of clients for ids
+	idConnectionMap map[string]*connection
+}
+
+type connectionWithMessage struct {
+	connection *connection
+	message []byte
 }
 
 var h = hub{
-	broadcast:   make(chan []byte),
+	broadcast:   make(chan (connectionWithMessage)),
 	register:    make(chan *connection),
 	unregister:  make(chan *connection),
 	connections: make(map[*connection]bool),
+	idConnectionMap: make(map[string]*connection),
 }
 
 func (h *hub) run() {
@@ -43,20 +52,45 @@ func (h *hub) run() {
 				delete(h.connections, c)
 				close(c.send)
 			}
-		case m := <-h.broadcast:
-			for c := range h.connections {
-				select {
-				case c.send <- m:
-					
-					message, err := types.Deserialize(m)
-					if err != nil {
-						log.Println("Error deserializing: ", err)
+		case conMessage := <-h.broadcast:
+
+			payload := conMessage.message
+			incomingConnection := conMessage.connection
+			message, err := types.Deserialize(payload)
+
+			if err != nil {
+				log.Println("Error deserializing: ", err)
+				continue
+			}
+			log.Println(message)
+
+			switch message.Mode {
+			case types.Listen_id:
+				if (message.ClientId != "") {
+					log.Println("Registering listener: ", message.ClientId)
+					h.idConnectionMap[message.ClientId] = incomingConnection
+				} else {
+					log.Println("Got bad message (client id not set)")
+				}
+
+			default:
+				// Send the message to the clients listening on that id
+				// TODO: enforce every message has a client id
+				id := message.ClientId
+				outgoingConnection, ok := h.idConnectionMap[id]
+				_, validChannel := h.connections[outgoingConnection]
+				if ok && validChannel {
+					select {
+						case outgoingConnection.send <- payload:
+							log.Println("message routed")
+						default:
+							println("listener dead, closing")
+							close(outgoingConnection.send)
+							delete(h.idConnectionMap, id)
+
 					}
-					log.Println(message)
-			
-				default:
-					close(c.send)
-					delete(h.connections, c)
+				} else {
+					log.Println("Got", message.ClientId, "but no client registered")
 				}
 			}
 		}

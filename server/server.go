@@ -48,7 +48,10 @@ func (c *connection) readPump() {
 		if err != nil {
 			break
 		}
-		h.broadcast <- message
+		obj := connectionWithMessage{}
+		obj.connection = c
+		obj.message = message
+		h.broadcast <- obj
 	}
 }
 
