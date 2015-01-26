@@ -32,15 +32,15 @@ func sendMessage(ws *websocket.Conn, message types.Message) {
 
 func main() {
 	const message = "Hello World!"
-	//const server = "130.211.141.47"
-	const server = "127.0.0.1:8080"
-	const clientId = "RUSSELL2"
+	const server = "130.211.141.47"
+	//const server = "127.0.0.1:8080"
+
 	dialer := websocket.DefaultDialer;
 	ws, _, err := dialer.Dial("ws://" + server + "/ws", nil)
 	var mode = flag.String("mode", "", "modes (s: start, e: end)")
 	var command = flag.String("command", "", "Command that was run (and finished)")
 	var status = flag.Int("status", 0, "Status of command run")
-	//var clientId = flat.String("client", "", "ClientId")
+	var clientId = flag.String("client", "", "ClientId")
 	flag.Parse()
 	defer ws.Close()
 
@@ -51,8 +51,8 @@ func main() {
 
 	fmt.Println(*mode);
 	if *mode == "s" {
-		sendMessage(ws, types.StartMessage(*command, clientId))
+		sendMessage(ws, types.StartMessage(*command, *clientId))
 	} else if *mode == "e" {
-		sendMessage(ws, types.EndMessage(*command, *status, clientId))
+		sendMessage(ws, types.EndMessage(*command, *status, *clientId))
 	}
 }
