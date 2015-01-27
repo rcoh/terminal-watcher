@@ -1,0 +1,12 @@
+tw() {
+	if [ ! -f "~/.twid" ]
+		then
+		LC_CTYPE=C tr -dc A-Za-z0-9 < /dev/urandom | head -c 6 > ~/.twid
+	fi
+
+	CLIENT=`cat ~/.twid`
+	
+	client -mode s -command "$*" -client $CLIENT
+	$@
+	client -mode e -command "$*" -status $? -client $CLIENT
+}

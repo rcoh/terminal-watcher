@@ -4,7 +4,6 @@ import (
 	"log"
 	"github.com/gorilla/websocket"
 	"flag"
-	"fmt"
 	"github.com/rcoh/terminal-watcher/types"
 )
 
@@ -23,7 +22,7 @@ func sendMessage(ws *websocket.Conn, message types.Message) {
 	if err != nil {
 		panic("Failed to serialize message")
 	}
-	println(string(text[:]))
+
 	if err := ws.WriteMessage(websocket.TextMessage, []byte(text)); err != nil {
 		log.Println("WriteMessage: %v", err)
     }
@@ -49,7 +48,6 @@ func main() {
 		log.Println("Connection and sending failed", err);
 	}
 
-	fmt.Println(*mode);
 	if *mode == "s" {
 		sendMessage(ws, types.StartMessage(*command, *clientId))
 	} else if *mode == "e" {
