@@ -1,7 +1,9 @@
 tw() {
-	if [ ! -f "~/.twid" ]
+	if [ ! -f "$HOME/.twid" ];
 		then
-		LC_CTYPE=C tr -dc A-Za-z0-9 < /dev/urandom | head -c 6 > ~/.twid
+		LC_CTYPE=C tr -dc ABCDEFGHJKLMNPQRSTVWXYZ1-9 < /dev/urandom | head -c 6 > ~/.twid
+		echo "\n" >> ~/.twid
+		echo "Your Code: `cat ~/.twid`"
 	fi
 
 	CLIENT=`cat ~/.twid`
