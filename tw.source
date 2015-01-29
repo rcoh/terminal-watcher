@@ -2,7 +2,7 @@ tw() {
 	if [ ! -f "$HOME/.twid" ];
 		then
 		LC_CTYPE=C tr -dc ABCDEFGHJKLMNPQRSTVWXYZ1-9 < /dev/urandom | head -c 6 > ~/.twid
-		echo "\n" >> ~/.twid
+		echo "" >> ~/.twid
 		echo "Your Code: `cat ~/.twid`"
 	fi
 
