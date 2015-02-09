@@ -7,6 +7,7 @@ import (
 const Start_id = 0
 const End_id = 1
 const Listen_id = 2
+const Tail_id = 3
 
 type Message struct {
 	ClientId string
@@ -30,6 +31,14 @@ func EndMessage(command string, status int, clientId string) Message {
 		Mode: End_id,
 		Command: command,
 		Status: status,
+		ClientId: clientId,
+	}
+}
+
+func TailMessage(command string, clientId string) Message {
+	return Message{
+		Mode: Tail_id,
+		Command: command,
 		ClientId: clientId,
 	}
 }

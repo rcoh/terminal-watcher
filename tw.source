@@ -1,14 +1,37 @@
-tw() {
+function conf {
 	if [ ! -f "$HOME/.twid" ];
 		then
 		LC_CTYPE=C tr -dc ABCDEFGHJKLMNPQRSTVWXYZ1-9 < /dev/urandom | head -c 6 > ~/.twid
 		echo "" >> ~/.twid
 		echo "Your Code: `cat ~/.twid`"
 	fi
+}
 
+tw() {
+	conf
 	CLIENT=`cat ~/.twid`
 	
 	client -mode s -command "$*" -client $CLIENT
-	$@
+	$*
+	STATUS=$?
 	client -mode e -command "$*" -status $? -client $CLIENT
+	return STATUS
+}
+
+tf() {
+	conf
+	CLIENT=`cat ~/.twid`
+	OUTPUT_PIPE=/tmp/follow
+	[ -f $OUTPUT_PIPE ] && rm $OUTPUT_PIPE
+	mkfifo $OUTPUT_PIPE
+	# ( ) denotes a subshell. This silences the job control messages
+	(client -mode f -file $OUTPUT_PIPE -client $CLIENT &)
+	
+	client -mode s -command "$*" -client $CLIENT
+	script -t 0 -q $OUTPUT_PIPE $*
+	STATUS=$?
+	client -mode e -command "$*" -status $? -client $CLIENT
+
+	rm $OUTPUT_PIPE
+	return STATUS
 }
