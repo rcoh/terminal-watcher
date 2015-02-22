@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=0.2-alpha
+VERSION=0.3-beta
 BASE_URL="https://github.com/rcoh/terminal-watcher/releases/download/$VERSION"
 LINUX_BINARY_URL="$BASE_URL/client-linux"
 OSX_BINARY_URL="$BASE_URL/client-osx"
