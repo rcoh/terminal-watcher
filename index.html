@@ -29,9 +29,9 @@
     <div class="container">
       <section id="main_content">
         <h1>
-<a id="terminal-watcher" class="anchor" href="#terminal-watcher" aria-hidden="true"><span class="octicon octicon-link"></span></a>terminal-watcher</h1>
+<a id="terminal-watcher" class="anchor" href="#terminal-watcher" aria-hidden="true"><span class="octicon octicon-link"></span></a>Terminal Watcher</h1>
 
-<p>Monitor your shell scripts scripts from your phone. Terminal watcher helps to monitor long running shell commands like compilation or batch jobs. It works by sending you a push notification on your phone when the command completes.</p>
+<p>Terminal Watcher is an <a href="https://play.google.com/store/apps/details?id=me.rcoh.terminalwatcher&amp;hl=en">android app</a> and desktop client that combine to send you push notifications when shell scripts complete. To use it, preface your command with <code>tw</code>. You'll get a push notification when it finishes along with the exit status.</p>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
@@ -43,7 +43,13 @@
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>Once installed, run a command as you normally would be preface it with <code>tw</code>. The start, end, and exit status code will be sent to your phone.</p>
+<p>Once installed, run a command as you normally would be preface it with <code>tw</code>. The start, end, and exit status code will be sent to your phone. Eg:</p>
+
+<pre><code>bash $ tw sleep 10
+# Ten seconds later...
+</code></pre>
+
+<p><img src="/images/sleep10.png" alt="Terminal Watcher Notification"></p>
       </section>
     </div>
 
