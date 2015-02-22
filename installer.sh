@@ -18,9 +18,9 @@ else
 fi
 
 echo "Downloading binary from $BINARY_URL"
-curl -L "$BINARY_URL" > /usr/local/bin/twclient
-curl -L "$TW_SOURCE" > ~/.tw-wrapper
-chmod +x /usr/local/bin/twclient
+sudo curl -L "$BINARY_URL" -o /usr/local/bin/twclient
+curl -L "$TW_SOURCE" -o ~/.tw-wrapper
+sudo chmod +x /usr/local/bin/twclient
  
 read -p "Please specify your shellrc: (eg. ~/.bashrc, ~/.zshrc: " RC_FILE < /dev/tty || {
 	echo "Couldn't read input from /dev/tty"
@@ -35,3 +35,6 @@ echo "source ~/.tw-wrapper" >> $RC_FILE
 echo "Installation complete! Running test command"
 source ~/.tw-wrapper
 tw echo "Hello world!"
+echo ""
+echo ""
+echo "Installation complete. Run: \"source $RC_FILE\" to complete installation"
