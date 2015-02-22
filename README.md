@@ -1,8 +1,9 @@
-# terminal-watcher
-Monitor your shell scripts scripts from your phone. Terminal watcher helps to monitor long running shell commands like compilation or batch jobs. It works by sending you a push notification on your phone when the command completes.
+# Terminal Watcher
+Terminal Watcher is an [android app](https://play.google.com/store/apps/details?id=me.rcoh.terminalwatcher&hl=en) and [desktop client](https://github.com/rcoh/terminal-watcher/releases) that combine to send you push notifications when shell scripts complete. To use it, preface your command with `tw`. You'll get a push notification when it finishes along with the exit status.
+
 
 ## Installation
-See the relevant [release](https://github.com/rcoh/terminal-watcher/releases). Currently:
+Terminal watcher has two parts: A desktop client and an android app. To install the desktop client: (OS X and Linux)
 ```
 curl -L "https://raw.githubusercontent.com/rcoh/terminal-watcher/master/installer.sh" | bash
 ```
@@ -13,5 +14,6 @@ The Android app source is at: https://github.com/rcoh/tw-android
 Once installed, run a command as you normally would be preface it with `tw`. The start, end, and exit status code will be sent to your phone. Eg:
 ```
 bash $ tw sleep 10
+# Ten seconds later...
 ```
-In 10 seconds, your phone will buzz with a notification!
+![Terminal Watcher Notification](images/sleep10.png)
