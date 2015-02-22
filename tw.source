@@ -11,27 +11,31 @@ tw() {
 	conf
 	CLIENT=`cat ~/.twid`
 	
-	client -mode s -command "$*" -client $CLIENT
+	twclient -mode s -command "$*" -client $CLIENT
 	$*
 	STATUS=$?
-	client -mode e -command "$*" -status $? -client $CLIENT
-	return STATUS
+	twclient -mode e -command "$*" -status $STATUS -client $CLIENT
+	return $STATUS
 }
 
 tf() {
+	if [[ "$(uname)" != "Darwin" ]]; then
+		echo "Following is only suppoted on OS X"
+		return 1
+	fi
 	conf
 	CLIENT=`cat ~/.twid`
 	OUTPUT_PIPE=/tmp/follow
 	[ -f $OUTPUT_PIPE ] && rm $OUTPUT_PIPE
 	mkfifo $OUTPUT_PIPE
 	# ( ) denotes a subshell. This silences the job control messages
-	(client -mode f -file $OUTPUT_PIPE -client $CLIENT &)
+	(twclient -mode f -file $OUTPUT_PIPE -client $CLIENT &)
 	
-	client -mode s -command "$*" -client $CLIENT
+	twclient -mode s -command "$*" -client $CLIENT
 	script -t 0 -q $OUTPUT_PIPE $*
 	STATUS=$?
-	client -mode e -command "$*" -status $? -client $CLIENT
+	twclient -mode e -command "$*" -status $STATUS -client $CLIENT
 
 	rm $OUTPUT_PIPE
-	return STATUS
+	return $STATUS
 }
