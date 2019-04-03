@@ -16,4 +16,4 @@ Once installed, run a command as you normally would be preface it with `tw`. The
 bash $ tw sleep 10
 # Ten seconds later...
 ```
-![Terminal Watcher Notification](images/sleep10.png)
+![Terminal Watcher Notification](https://github.com/rcoh/terminal-watcher/tree/gh-pages/images/sleep10.png)
